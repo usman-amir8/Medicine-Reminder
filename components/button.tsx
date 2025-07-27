@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors";
 import React from "react";
 import {
   StyleSheet,
@@ -26,7 +25,8 @@ const styles = StyleSheet.create({
   button: {
     width: 250,
     height: 60,
-    backgroundColor: Colors.primaryColor,
+    // backgroundColor: Colors.primaryColor,
+    backgroundColor: "#1a8e2d",
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",

@@ -1,9 +1,11 @@
 import Circularprogress from "@/components/circular-progress";
 import Heading from "@/components/heading";
+import IconContainer from "@/components/icon-container";
+import MedicationCard from "@/components/medication-card";
+import ModalComponent from "@/components/modal";
 import QuickActions from "@/components/quick-action";
 import QuickActionCard from "@/components/quick-action-card";
 import { Colors } from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,11 +16,7 @@ export default function Home() {
       style={{ flex: 1, backgroundColor: "#ffffff" }}
     >
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        
-        
-        
         <View style={styles.container}>
-
           {/* Daily Progress and Notification Icon*/}
 
           <View
@@ -30,8 +28,9 @@ export default function Home() {
             }}
           >
             <Heading title="Daily Progress" />
-            <TouchableOpacity style={styles.icon}>
-              <Ionicons name="notifications-outline" size={30} color="white" />
+
+            <TouchableOpacity>
+              <IconContainer icon="notifications-outline" size={30} />
             </TouchableOpacity>
           </View>
 
@@ -62,13 +61,18 @@ export default function Home() {
           ))}
         </View>
 
-       {/* Today's Schedule */}
+        {/* Today's Schedule */}
 
         <Heading
           title="Today's Schedule"
           fontColor="#000000"
           style={{ width: 350, marginBottom: 12, marginTop: 40 }}
         />
+
+        {/* Medicine Card */}
+        <MedicationCard />
+        
+        <ModalComponent/>
       </ScrollView>
     </SafeAreaView>
   );
@@ -84,19 +88,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     gap: 10,
   },
-  icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  greeting: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "white",
-  },
+
   quickAction: {
     flexDirection: "row",
     width: "100%",

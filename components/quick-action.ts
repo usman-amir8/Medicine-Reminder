@@ -5,7 +5,7 @@ const QuickActions = [
   {
     icon: "add-circle-outline" as const,
     title: "Add\nMedication",
-    route: "/" as const,
+   route: "/medications/add-medication" as const,
     color: "#2E7D32",
     gradient: ["#4CAF50", "#2E7D32"] as [string, string],
   },
