@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
-import Button from "./button";
-import IconContainer from "./icon-container";
+import Button from "../button";
+import IconContainer from "../icon-container";
 
 export default function MedicationCard() {
   return (

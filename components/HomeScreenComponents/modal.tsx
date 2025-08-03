@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import IconContainer from "./icon-container";
+import IconContainer from "../icon-container";
 
 export default function ModalComponent() {
   return (

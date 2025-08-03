@@ -1,7 +1,7 @@
 import { LinkProps, useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import IconContainer from "./icon-container";
+import IconContainer from "../icon-container";
 
 interface QuickActionCardProps {
   icon: string;

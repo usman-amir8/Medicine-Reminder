@@ -1,10 +1,10 @@
-import Circularprogress from "@/components/circular-progress";
 import Heading from "@/components/heading";
+import Circularprogress from "@/components/HomeScreenComponents/circular-progress";
+import MedicationCard from "@/components/HomeScreenComponents/medication-card";
+import ModalComponent from "@/components/HomeScreenComponents/modal";
+import QuickActions from "@/components/HomeScreenComponents/quick-action";
+import QuickActionCard from "@/components/HomeScreenComponents/quick-action-card";
 import IconContainer from "@/components/icon-container";
-import MedicationCard from "@/components/medication-card";
-import ModalComponent from "@/components/modal";
-import QuickActions from "@/components/quick-action";
-import QuickActionCard from "@/components/quick-action-card";
 import { Colors } from "@/constants/Colors";
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
