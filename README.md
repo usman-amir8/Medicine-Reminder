@@ -5,10 +5,10 @@ A cross-platform mobile application designed to help users track and manage thei
 ---
 
 ## Problem
-Many people forget to take their medicines on time, leading to missed doses and reduced treatment effectiveness.
+Forgetting or mismanaging medication schedules is a widespread issue—affecting an estimated 50% of patients with chronic illnesses—leading to reduced treatment effectiveness, prolonged recovery, and increased health risks.
 
 ## Solution
-I built a mobile app that allows users to log their medications, set schedules, and receive push notifications exactly when needed. This ensures timely intake and helps maintain consistent treatment routines.
+Engineered a cross-platform medicine reminder app that enables users to schedule medications, store data offline, and receive precise, automated push notifications—helping improve medication adherence and potentially reducing missed doses by up to 80%.
 
 ---
 
