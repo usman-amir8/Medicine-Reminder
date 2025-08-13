@@ -84,7 +84,7 @@ Edit
 ## Screenshots
 
 ### Home Screen
-![Home Screen](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/home-screen.png?raw=true)
+![Home Screen](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/home-screen.jpeg?raw=true)
 
 ### Add Medication
 ![Add Medication](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/add-medication.png?raw=true)
