@@ -80,9 +80,7 @@ home-screen.png
 add-medication.png
 reminder.png
 
-yaml
-Copy
-Edit
+
 
 ---
 
