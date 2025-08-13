@@ -1,35 +1,140 @@
+// import React from "react";
+// import { StyleSheet, Text, View } from "react-native";
+// import { Shadow } from "react-native-shadow-2";
+// import Button from "../button";
+// import IconContainer from "../icon-container";
+ 
+// interface props {
+//   todaysMedication : any
+// }
+
+
+// export default function MedicationCard({todaysMedication} : props) {
+//   return (
+//     <>
+//       {true ? (
+//         <Shadow distance={20} startColor="rgba(0,0,0,0.15)" offset={[0, 4]}>
+//           <View style={styles.emptyState}>
+//             <IconContainer icon="medical-outline" size={48} iconColor="grey" />
+//             <Text style={styles.emptyStateText}>
+//               No Medications Scheduled for Today
+//             </Text>
+           
+//             <Button title="Add Medications" />
+//           </View>
+//         </Shadow>
+//       ) : (
+//         <Shadow distance={20} startColor="rgba(0,0,0,0.15)" offset={[0, 4]}>
+//           <View style={styles.card}>
+//             <IconContainer icon="medical-outline" size={20} iconColor="red" />
+//             <View>
+//               <Text style={styles.medicineName}>Paracetamol</Text>
+//               <Text style={styles.medicineDosage}>500g</Text>
+//               <Text style={styles.medicineTime}>9pm</Text>
+//             </View>
+
+//             <View style={styles.takenBadge}>
+//               {false ? (
+//                 <>
+//                   <IconContainer
+//                     icon="checkmark-circle-outline"
+//                     size={20}
+//                     iconColor="green"
+//                   />
+//                   <Text style={styles.takenText}>Taken</Text>
+//                 </>
+//               ) : (
+//                 <>
+//                   <IconContainer
+//                     icon="close-circle-outline"
+//                     size={20}
+//                     iconColor="green"
+//                   />
+//                   <Text style={styles.takenText}>Missed</Text>
+//                 </>
+//               )}
+//             </View>
+//           </View>
+//         </Shadow>
+//       )}
+//     </>
+
+//     // <Shadow
+//     //   distance={20}
+//     //   startColor="rgba(0,0,0,0.15)"
+//     //   offset={[0, 4]}
+
+//     // >
+//     //   <View style={styles.card}>
+//     //     <IconContainer icon="medical-outline" size={20} iconColor="red" />
+//     //     <View>
+//     //       <Text style={styles.medicineName}>Paracetamol</Text>
+//     //       <Text style={styles.medicineDosage}>500g</Text>
+//     //       <Text style={styles.medicineTime}>9pm</Text>
+//     //     </View>
+//     //     <View style={styles.takenBadge}>
+//     //   {true ? (
+//     //           <><IconContainer icon="checkmark-circle-outline" size={20} iconColor="green" /><Text style={styles.takenText}>Taken</Text></>
+
+//     //         ) : (
+//     //           <><IconContainer icon="close-circle-outline" size={20} iconColor="green" /><Text style={styles.takenText}>missed</Text></>
+//     //         )
+
+//     //         }
+//     //        {/* <IconContainer icon="time-outline" size={20} iconColor="green" />
+//     //        <Text style={styles.takenText}>Taken</Text> */}
+//     //      </View>
+//     //    </View>
+//     //  </Shadow>
+//   );
+// }
+
+
+
+import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import Button from "../button";
 import IconContainer from "../icon-container";
 
-export default function MedicationCard() {
+interface Props {
+  todaysMedication: any[];
+}
+
+export default function MedicationCard({ todaysMedication }: Props) {
+  if (!todaysMedication || todaysMedication.length === 0) {
+    return (
+      <Shadow distance={20} startColor="rgba(0,0,0,0.15)" offset={[0, 4]}>
+        <View style={styles.emptyState}>
+          <IconContainer icon="medical-outline" size={48} iconColor="grey" />
+          <Text style={styles.emptyStateText}>
+            No Medications Scheduled for Today
+          </Text>
+          <Button title="Add Medications" onPress={()=>router.push('/medications/add-medication')} />
+        </View>
+      </Shadow>
+    );
+  }
+
   return (
     <>
-      {true ? (
-        <Shadow distance={20} startColor="rgba(0,0,0,0.15)" offset={[0, 4]}>
-          <View style={styles.emptyState}>
-            <IconContainer icon="medical-outline" size={48} iconColor="grey" />
-            <Text style={styles.emptyStateText}>
-              No Medications Scheduled for Today
-            </Text>
-           
-            <Button title="Add Medications" />
-          </View>
-        </Shadow>
-      ) : (
-        <Shadow distance={20} startColor="rgba(0,0,0,0.15)" offset={[0, 4]}>
+      {todaysMedication.map((med) => (
+        <Shadow
+          key={med.id}
+          distance={20}
+          startColor="rgba(0,0,0,0.15)"
+          offset={[0, 4]}
+        >
           <View style={styles.card}>
             <IconContainer icon="medical-outline" size={20} iconColor="red" />
             <View>
-              <Text style={styles.medicineName}>Paracetamol</Text>
-              <Text style={styles.medicineDosage}>500g</Text>
-              <Text style={styles.medicineTime}>9pm</Text>
+              <Text style={styles.medicineName}>{med.name}</Text>
+              <Text style={styles.medicineDosage}>{med.dosage}</Text>
+              <Text style={styles.medicineTime}>{med.time || "Scheduled time"}</Text>
             </View>
-
             <View style={styles.takenBadge}>
-              {false ? (
+              {med.taken ? (
                 <>
                   <IconContainer
                     icon="checkmark-circle-outline"
@@ -43,7 +148,7 @@ export default function MedicationCard() {
                   <IconContainer
                     icon="close-circle-outline"
                     size={20}
-                    iconColor="green"
+                    iconColor="red"
                   />
                   <Text style={styles.takenText}>Missed</Text>
                 </>
@@ -51,38 +156,11 @@ export default function MedicationCard() {
             </View>
           </View>
         </Shadow>
-      )}
+      ))}
     </>
-
-    // <Shadow
-    //   distance={20}
-    //   startColor="rgba(0,0,0,0.15)"
-    //   offset={[0, 4]}
-
-    // >
-    //   <View style={styles.card}>
-    //     <IconContainer icon="medical-outline" size={20} iconColor="red" />
-    //     <View>
-    //       <Text style={styles.medicineName}>Paracetamol</Text>
-    //       <Text style={styles.medicineDosage}>500g</Text>
-    //       <Text style={styles.medicineTime}>9pm</Text>
-    //     </View>
-    //     <View style={styles.takenBadge}>
-    //   {true ? (
-    //           <><IconContainer icon="checkmark-circle-outline" size={20} iconColor="green" /><Text style={styles.takenText}>Taken</Text></>
-
-    //         ) : (
-    //           <><IconContainer icon="close-circle-outline" size={20} iconColor="green" /><Text style={styles.takenText}>missed</Text></>
-    //         )
-
-    //         }
-    //        {/* <IconContainer icon="time-outline" size={20} iconColor="green" />
-    //        <Text style={styles.takenText}>Taken</Text> */}
-    //      </View>
-    //    </View>
-    //  </Shadow>
   );
 }
+
 
 const styles = StyleSheet.create({
   card: {
@@ -152,3 +230,5 @@ const styles = StyleSheet.create({
     
   },
 });
+
+

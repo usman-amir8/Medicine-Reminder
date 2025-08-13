@@ -33,7 +33,7 @@ export default function RenderFrequenciesOptions({ form, setForm }: Props) {
             <Ionicons
               name={freq.icon}
               size={24}
-              color={selectedFrequency === freq.label ? "whhite" : "#666"}
+              color={selectedFrequency === freq.label ? "white" : "#666"}
             />
             <Text
               style={[

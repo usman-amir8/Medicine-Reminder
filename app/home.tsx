@@ -6,10 +6,125 @@ import QuickActions from "@/components/HomeScreenComponents/quick-action";
 import QuickActionCard from "@/components/HomeScreenComponents/quick-action-card";
 import IconContainer from "@/components/icon-container";
 import { Colors } from "@/constants/Colors";
-import React from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { registerForPushNotificationsAsync, scheduleMedicationReminder } from "@/utils/notifications";
+import {
+  DoseHistory,
+  getMedications,
+  getTodaysDoses,
+  Medication,
+  recordDose,
+} from "@/utils/storage";
+import { useFocusEffect } from "@react-navigation/native";
+
+import React, { useCallback, useEffect, useState } from "react";
+import { Alert, AppState, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 export default function Home() {
+  const [todaysMedications, setTodaysMedications] = useState<Medication[]>([]);
+  const [doseHistory, setDoseHistory] = useState<DoseHistory[]>([]);
+  const [completedDoses, setCompletedDoses] = useState(0);
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const loadMedications = useCallback(async () => {
+    try {
+      const [allMedications, todaysDoses] = await Promise.all([
+        getMedications(),
+        getTodaysDoses(),
+      ]);
+      setDoseHistory(todaysDoses);
+      setMedications(allMedications);
+      const today = new Date();
+      const todayMeds = allMedications.filter((med) => {
+        const startDate = new Date(med.startDate);
+        const durationdays = parseInt(med.duration.split("")[0]);
+        if (
+          durationdays === -1 ||
+          (today >= startDate &&
+            today <=
+              new Date(
+                startDate.getTime() + durationdays * 24 * 24 * 60 * 1000
+              ))
+        ) {
+          return true;
+        }
+        return false;
+      });
+      setTodaysMedications(todayMeds);
+      const completed = todaysDoses.filter((dose) => dose.taken).length;
+      setCompletedDoses(completed);
+    } catch (error) {
+      console.log("Error Loading Medications : ", error);
+    }
+  }, []);
+   const setupNotifications = async () => {
+    try {
+      const token = await registerForPushNotificationsAsync();
+      if (!token) {
+        console.log("Failed to get push notification token");
+        return;
+      }
+
+      // Schedule reminders for all medications
+      const medications = await getMedications();
+      for (const medication of medications) {
+        if (medication.reminderEnabled) {
+          await scheduleMedicationReminder(medication);
+        }
+      }
+    } catch (error) {
+      console.error("Error setting up notifications:", error);
+    }
+  };
+
+  // Use useEffect for initial load
+  useEffect(() => {
+    loadMedications();
+    setupNotifications();
+
+    // Handle app state changes for notifications
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (nextAppState === "active") {
+        loadMedications();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  // Use useFocusEffect for subsequent updates
+  useFocusEffect(
+    useCallback(() => {
+      const unsubscribe = () => {
+        // Cleanup if needed
+      };
+
+      loadMedications();
+      return () => unsubscribe();
+    }, [loadMedications])
+  );
+
+  const handleTakeDose = async (medication: Medication) => {
+    try {
+      await recordDose(medication.id, true, new Date().toISOString());
+      await loadMedications(); // Reload data after recording dose
+    } catch (error) {
+      console.error("Error recording dose:", error);
+      Alert.alert("Error", "Failed to record dose. Please try again.");
+    }
+  };
+
+  const isDoseTaken = (medicationId: string) => {
+    return doseHistory.some(
+      (dose) => dose.medicationId === medicationId && dose.taken
+    );
+  };
+
+  const progress =
+    todaysMedications.length > 0
+      ? completedDoses / (todaysMedications.length * 2)
+      : 0;
+
   return (
     <SafeAreaView
       edges={["left", "right"]}
@@ -36,7 +151,7 @@ export default function Home() {
 
           {/* Circular Progress */}
 
-          <Circularprogress completedDoses={5} progress={0.5} totalDoses={10} />
+          <Circularprogress completedDoses={completedDoses} progress={progress} totalDoses={todaysMedications.length*2} />
         </View>
 
         {/* Quick Actions */}
@@ -70,9 +185,9 @@ export default function Home() {
         />
 
         {/* Medicine Card */}
-        <MedicationCard />
-        
-        <ModalComponent/>
+        <MedicationCard todaysMedication={todaysMedications}/>
+
+        <ModalComponent />
       </ScrollView>
     </SafeAreaView>
   );
