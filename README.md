@@ -1,229 +1,111 @@
 # Medicine Reminder App
 
-A cross‑platform mobile application that helps users remember to take medications on time. Built with **React Native**, **TypeScript**, **Expo (Expo Router)**, **AsyncStorage**, and **local notifications**.
+A cross-platform mobile application designed to help users track and manage their medication schedules efficiently. The app allows users to log medications, set reminders, and receive timely notifications — improving medication adherence and health outcomes.
 
 ---
 
-## Table of Contents
+## Problem
+Many people forget to take their medicines on time, leading to missed doses and reduced treatment effectiveness.
 
-* [Overview](#overview)
-* [Problem & Solution](#problem--solution)
-* [Features](#features)
-* [Feature Deep Dive](#feature-deep-dive)
-* [Tech Stack](#tech-stack)
-* [Project Structure](#project-structure)
-* [Data Model](#data-model)
-* [Notifications](#notifications)
-* [Getting Started](#getting-started)
-* [Running the App](#running-the-app)
-* [Common Tasks](#common-tasks)
-* [Quality & Conventions](#quality--conventions)
-* [Limitations](#limitations)
-* [Roadmap](#roadmap)
-* [License](#license)
-
----
-
-## Overview
-
-This app enables users to **create medication schedules**, **store them offline**, and **receive timely local push notifications** so doses are not missed. The UI is **simple, responsive, and mobile‑first**, optimized for Android and iOS.
-
-## Problem & Solution
-
-* **Problem:** Patients—especially those with chronic conditions or multiple prescriptions—often **forget or mismanage** their dosing schedule, reducing treatment effectiveness.
-* **Solution:** A **lightweight, offline‑first** mobile app that lets users **log medications** (name, dosage, time), **stores schedules locally** with AsyncStorage, and **triggers notifications** at the right time (with optional repetition), improving adherence.
-
----
-
-## Features
-
-* **Medication CRUD:** Add, edit, and delete medications with fields like *name*, *dosage*, *time(s)*, and *notes*.
-* **Local Notifications:** Schedule time‑based reminders using the device’s notification system (foreground/background).
-* **Offline Persistence:** Store all medication data and schedules locally via **AsyncStorage**.
-* **Cross‑Platform:** Single codebase for **Android** and **iOS**.
-* **Type Safety:** **TypeScript** throughout for safer refactors and fewer runtime errors.
-* **Clean UI:** Intuitive, responsive screens for quick data entry and review.
-* **Multiple Daily Doses:** Support for one or more reminders per day.
-* **Repeat Rules:** Option to repeat daily or on specific days of the week.
-
----
-
-## Feature Deep Dive
-
-### 1) Medication Management (CRUD)
-
-* Create: Input medication name, dosage (e.g., mg), one or more **times**, and optional notes.
-* Read: List view of all active medications; details view for an individual medication.
-* Update: Edit fields; reschedule notifications accordingly.
-* Delete: Remove medication and cancel scheduled notifications to avoid stale alerts.
-
-### 2) Scheduling & Recurrence
-
-* Time‑based scheduling using the device’s local time.
-* Repeat rules for daily or selected weekdays.
-* Handles next‑occurrence calculation for times that already passed today.
-
-### 3) Local Notifications
-
-* Requests permissions on first use.
-* Schedules one notification per dose time, with repeating triggers if configured.
-* Cancels notifications when a medication is deleted or disabled.
-
-### 4) Offline‑First Data
-
-* **AsyncStorage** backs all data; the app loads state from storage on launch.
-* Data is normalized for easy updates and quick rendering.
-
-### 5) UX Details
-
-* Form validation for required fields and valid time inputs.
-* Empty states and helper texts for first‑time users.
-* Accessible controls with dark mode‑friendly styles.
+## Solution
+I built a mobile app that allows users to log their medications, set schedules, and receive push notifications exactly when needed. This ensures timely intake and helps maintain consistent treatment routines.
 
 ---
 
 ## Tech Stack
+- **Framework:** React Native (Expo)
+- **Language:** TypeScript
+- **State Management:** Built-in React hooks
+- **Notifications:** Expo Notifications API
+- **Storage:** Async Storage
+- **UI Components:** Custom reusable components with responsive styling
 
-* **React Native** (Expo)
-* **TypeScript**
-* **Expo Router**
-* **expo-notifications**
-* **@react-native-async-storage/async-storage**
-* **UUID** or nanoid for stable IDs
-* (Optional) **dayjs** / **date-fns** for date/time utilities
+---
+
+## Features
+- Add, edit, and delete medications.
+- Set daily, weekly, or custom reminder frequencies.
+- Local notifications at scheduled times.
+- Progress tracking with visual indicators.
+- Quick actions from the home screen.
+- Persistent storage so data remains after app restarts.
 
 ---
 
 ## Project Structure
-
-```
 app/
-  index.tsx                 # Home / medication list
-  add-medication.tsx        # Create medication
-  medication/[id].tsx       # View/edit a medication
+_layout.tsx
+index.tsx
+home.tsx
+medications/
+add-medication.tsx
+
+assets/
+fonts/
+images/
+
 components/
-  MedicationForm.tsx
-  MedicationItem.tsx
-  EmptyState.tsx
-lib/
-  notifications.ts
-  storage.ts
-  time.ts
-types/
-  medication.ts
-context/
-  MedicationsContext.tsx
-```
+AddMedicationScreen/
+date-picker.tsx
+duration.ts
+frequency.ts
+reminder-section.tsx
+render-duration-option.tsx
+render-frequency-option.tsx
+time-picker.tsx
+types.ts
+HomeScreenComponents/
+circular-progress.tsx
+medication-card.tsx
+modal.tsx
+quick-action-card.tsx
+quick-action.ts
+ui/
+button.tsx
+heading.tsx
+icon-container.tsx
+input.tsx
+
+utils/
+notification.ts
+storage.ts
+
+screenshots/
+home-screen.png
+add-medication.png
+reminder.png
+
+yaml
+Copy
+Edit
 
 ---
 
-## Data Model
+## Screenshots
 
-```ts
-export type Frequency = 'once' | 'daily' | 'weekdays' | 'custom';
+### Home Screen
+![Home Screen](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/home-screen.png?raw=true)
 
-export interface DoseTime {
-  id: string;
-  hour: number;
-  minute: number;
-  weekdays?: number[];
-}
+### Add Medication
+![Add Medication](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/add-medication.png?raw=true)
 
-export interface Medication {
-  id: string;
-  name: string;
-  dosage?: string;
-  notes?: string;
-  enabled: boolean;
-  times: DoseTime[];
-  createdAt: number;
-  updatedAt: number;
-}
-```
+### Reminder Notification
+![Reminder Notification](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/reminder.png?raw=true)
 
 ---
 
-## Notifications
-
-Uses **expo-notifications** for local notifications.
-
-* Requests permissions at first launch.
-* Creates a notification channel on Android.
-* Schedules notifications per dose time.
-* Cancels outdated notifications on edits or deletions.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-* Node.js LTS (>= 18)
-* npm / yarn / pnpm
-* Expo CLI
-* Xcode (for iOS) / Android Studio (for Android)
-
-### Setup
-
+## Installation & Running Locally
 ```bash
+# Clone repository
+git clone https://github.com/usman-amir8/Medicine-Reminder.git
+
+# Navigate into the project
+cd Medicine-Reminder
+
+# Install dependencies
 npm install
+
+# Start Expo server
 npx expo start
-```
-
----
-
-## Running the App
-
-**Android:**
-
-```bash
-npx expo run:android
-```
-
-**iOS:**
-
-```bash
-npx expo run:ios
-```
-
----
-
-## Common Tasks
-
-* Add medication: `+` button → fill form → save.
-* Edit medication: open item → edit → save.
-* Delete medication: remove entry → notifications canceled.
-* Toggle on/off: disable without deleting.
-
----
-
-## Quality & Conventions
-
-* TypeScript for all code.
-* ESLint + Prettier for consistent formatting.
-* Component-based architecture.
-
----
-
-## Limitations
-
-* Local storage only (no sync).
-* Notification reliability depends on OS battery optimizations.
-* Time zone changes may affect schedules.
-
----
-
-## Roadmap
-
-* Snooze / Skip actions from notifications
-* Taken history & adherence stats
-* Refill reminders & stock tracking
-* Calendar view
-* Cloud sync & auth
-* Localization
-
----
-
-## License
-
-This project is for educational and portfolio purposes. Add your preferred license if open-sourcing.
+License
+This project is licensed under the MIT License.
