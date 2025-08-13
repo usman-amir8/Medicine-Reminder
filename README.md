@@ -83,14 +83,16 @@ Edit
 
 ## Screenshots
 
+### Auth Screen
+![Auth Screen](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/auth-screen.jpeg?raw=true)
+
 ### Home Screen
 ![Home Screen](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/home-screen.jpeg?raw=true)
 
 ### Add Medication
-![Add Medication](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/add-medication.png?raw=true)
+![Add Medication](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/add-medication-screen.jpeg?raw=true)
 
-### Reminder Notification
-![Auth Screen](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/auth-screen.jpeg?raw=true)
+
 
 ---
 
