@@ -90,7 +90,7 @@ Edit
 ![Add Medication](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/add-medication.png?raw=true)
 
 ### Reminder Notification
-![Reminder Notification](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/reminder.png?raw=true)
+![Auth Screen](https://github.com/usman-amir8/Medicine-Reminder/blob/main/screenshots/auth-screen.jpeg?raw=true)
 
 ---
 
