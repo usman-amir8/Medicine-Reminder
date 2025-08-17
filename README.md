@@ -114,3 +114,7 @@ npm install
 npx expo start
 License
 This project is licensed under the MIT License.
+
+👤 Author
+Muhammad Usman Amir
+GitHub: usman-amir8
